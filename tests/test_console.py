@@ -9,9 +9,9 @@ from unittest.mock import patch
 
 HBNBCommand = console.HBNBCommand
 
+
 class TestConsole(unittest.TestCase):
     """To test the console."""
-
     @classmethod
     def setUpClass(cls):
         """set up for the test."""
