@@ -50,15 +50,13 @@ class BaseModel:
 
     def to_dict(self):
         """Convert instance into dict format"""
-        new_dict = self.__dict__.copy()
-        if "created_at" in new_dict:
-            new_dict["created_at"] = new_dict["created_at"].strftime(time)
-        if "updated_at" in new_dict:
-            new_dict["updated_at"] = new_dict["updated_at"].strftime(time)
-        new_dict["__class__"] = self.__class__.__name__
-        if "_sa_instance_state" in new_dict:
-            del new_dict["_sa_instance_state"]
-        return new_dict
+        my_dict = self.__dict__.copy()
+        my_dict["_class"] = type(self).__name__
+        my_dict["created_at"] = my_dict["created_at"].isoformat()
+        my_dict["updated_at"] = my_dict["updated_at"].isoformat()
+        if "_sa_instance_state" in my_dict:
+            del my_dict["_sa_instance_state"]
+        return my_dict
 
     def delete(self):
         """delete the current instance from the storage"""
