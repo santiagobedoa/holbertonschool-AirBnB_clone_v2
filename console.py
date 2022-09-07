@@ -10,6 +10,10 @@ from models.state import State
 from models.city import City
 from models.amenity import Amenity
 from models.review import Review
+import shlex  # for splitting the line along spaces except in double quotes
+
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 class HBNBCommand(cmd.Cmd):
@@ -29,7 +33,7 @@ class HBNBCommand(cmd.Cmd):
              'max_guest': int, 'price_by_night': int,
              'latitude': float, 'longitude': float
             }
-
+    
     def num_or_float(self, arg: str):
         """
         Method to convert str to int or float
@@ -147,9 +151,8 @@ class HBNBCommand(cmd.Cmd):
             else:
                 value = self.num_or_float(value)
             setattr(new_instance, key, value)
-        storage.save()
+        new_instance.save()
         print(new_instance.id)
-        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -222,23 +225,22 @@ class HBNBCommand(cmd.Cmd):
         print("Destroys an individual instance of a class")
         print("[Usage]: destroy <className> <objectId>\n")
 
-    def do_all(self, args):
-        """ Shows all objects, or all objects of a class"""
-        print_list = []
-
-        if args:
-            args = args.split(' ')[0]  # remove possible trailing args
-            if args not in HBNBCommand.classes:
-                print("** class doesn't exist **")
-                return
-            for k, v in storage._FileStorage__objects.items():
-                if k.split('.')[0] == args:
-                    print_list.append(str(v))
+    def do_all(self, arg):
+        """Prints string representations of instances"""
+        args = shlex.split(arg)
+        obj_list = []
+        if len(args) == 0:
+            obj_dict = storage.all()
+        elif args[0] in classes:
+            obj_dict = storage.all(classes[args[0]])
         else:
-            for k, v in storage._FileStorage__objects.items():
-                print_list.append(str(v))
-
-        print(print_list)
+            print("** class doesn't exist **")
+            return False
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
+        print("[", end="")
+        print(", ".join(obj_list), end="")
+        print("]")
 
     def help_all(self):
         """ Help information for the all command """
