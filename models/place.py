@@ -8,6 +8,7 @@ from sqlalchemy import Float, Table
 from sqlalchemy.orm import relationship
 from models.city import City
 
+
 class Place(BaseModel, Base):
     """ A place to stay
     city_id = ""
