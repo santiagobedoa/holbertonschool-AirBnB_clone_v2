@@ -8,7 +8,7 @@ sudo apt-get -y install nginx
 # Creating directories
 sudo mkdir -p /data/web_static/shared/ /data/web_static/releases/test/
 # Creating html for testing
-echo "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>" | sudo tee /data/web_static/releases/test/index.html
+echo -e "<html>\n  <head>\n  </head>\n  <body>\n    Holberton School\n  </body>\n</html>" | sudo tee /data/web_static/releases/test/index.html
 # Creating symbilic link
 sudo ln -sf /data/web_static/releases/test/ /data/web_static/current
 # Grants permissions
