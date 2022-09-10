@@ -33,5 +33,4 @@ def do_deploy(archive_path):
             /data/web_static/current'.format(file))
         return True
     except Exception as e:
-        print(e)
         return False
